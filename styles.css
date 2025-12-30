@@ -698,14 +698,20 @@ body::before {
 .countdown-title {
     font-family: 'Playfair Display', serif;
     font-size: 2.5rem;
-    background: linear-gradient(135deg, #ff4d4d, #ff1493, #ff69b4, #ffe4e1);
+    background: linear-gradient(135deg, #ff0000, #ff1493, #ff69b4);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     margin-bottom: 30px;
-    text-shadow: 0 0 15px rgba(255, 105, 180, 0.6);
+    text-shadow: 2px 2px 8px rgba(255, 20, 147, 0.4);
     animation: romantic-glow 4s ease-in-out infinite;
     position: relative;
+}
+
+.countdown-title .emoji {
+    -webkit-text-fill-color: initial;
+    text-shadow: none;
+    display: inline-block;
 }
 
 .countdown-display {
@@ -1161,4 +1167,124 @@ body::before {
     transform: scale(1.1) rotate(2deg);
     z-index: 10;
     box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+}
+
+
+/* Celebration Emoji Fix */
+.celebration-title .emoji,
+.celebration-text .emoji {
+    -webkit-text-fill-color: initial;
+    text-shadow: none;
+    display: inline-block;
+}
+
+
+/* Password Modal Styles */
+.password-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 3000;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.password-modal.show {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 90%;
+    width: 320px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transform: scale(0.8);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 2px solid #ff69b4;
+}
+
+.password-modal.show .modal-content {
+    transform: scale(1);
+}
+
+.modal-content h3 {
+    color: #8b0000;
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+}
+
+.modal-content p {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: 20px;
+    outline: none;
+    transition: border-color 0.3s;
+    color: #333;
+}
+
+.modal-content input:focus {
+    border-color: #ff69b4;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.modal-buttons button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Lora', serif;
+    font-weight: 600;
+    transition: transform 0.2s;
+}
+
+#submitBtn {
+    background: linear-gradient(45deg, #ff69b4, #ff1493);
+    color: white;
+}
+
+#cancelBtn {
+    background: #f0f0f0;
+    color: #666;
+}
+
+.modal-buttons button:active {
+    transform: scale(0.95);
+}
+
+.shake {
+    animation: shake-modal 0.4s ease-in-out;
+    border-color: #ff0000 !important;
+}
+
+@keyframes shake-modal {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
 }

@@ -1,5 +1,5 @@
-// New Year 2026 countdown - January 1, 2026
-const newYear2026 = new Date('2026-01-01T00:00:00').getTime();
+// New Year 2026 countdown - Set to 1 minute from now for testing
+const newYear2026 = new Date().getTime() + 60000;
 
 function updateCountdown() {
     const now = new Date().getTime();
@@ -45,6 +45,12 @@ function updateCountdown() {
 
 function showCelebration() {
     const countdownSection = document.querySelector('.countdown-section');
+    
+    // Prevent duplicate celebrations
+    if (document.querySelector('.celebration-container')) {
+        return;
+    }
+
     const countdownDisplay = document.querySelector('.countdown-display');
     const countdownTitle = document.querySelector('.countdown-title');
     
@@ -56,10 +62,10 @@ function showCelebration() {
     const celebrationContainer = document.createElement('div');
     celebrationContainer.className = 'celebration-container';
     celebrationContainer.innerHTML = `
-        <h1 class="celebration-title">🎉 Happy New Year 2026! 🎊</h1>
+        <h1 class="celebration-title"><span class="emoji">🎉</span> Happy New Year 2026! <span class="emoji">🎊</span></h1>
         <div class="celebration-text">
-            <p>Welcome to 2026, my love! 💕</p>
-            <p>May this new year bring us endless happiness together! 🌟</p>
+            <p>Welcome to 2026, my love! <span class="emoji">💕</span></p>
+            <p>May this new year bring us endless happiness together! <span class="emoji">🌟</span></p>
         </div>
     `;
     
@@ -68,6 +74,13 @@ function showCelebration() {
     // Trigger intense fireworks
     fireworkChance = 0.4; // Increase frequency significantly
     
+    // Play fireworks sound
+    // Using "Intense Fireworks Show" - heavy, rapid explosions
+    const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2994/2994-preview.mp3');
+    audio.volume = 0.3; // 30% volume
+    audio.loop = true;
+    audio.play().catch(e => console.log('Audio play failed (user interaction required):', e));
+
     // Launch immediate burst
     for(let i=0; i<10; i++) {
         setTimeout(() => fireworks.push(new Firework()), i * 100);
@@ -345,21 +358,6 @@ function initializeEnvelope() {
     // Add multiple event types for maximum compatibility
     const events = ['click', 'touchstart', 'pointerdown'];
     
-    // Handle Open Letter Button
-    const openBtn = document.getElementById('openLetterBtn');
-    if (openBtn) {
-        openBtn.addEventListener('click', function(e) {
-            // Simulate opening the letter (bypass time check)
-            if (!isOpened && !isAnimating) {
-                console.log('🔓 Force opening envelope via button...');
-                openEnvelope();
-                isOpened = true;
-                isAnimating = true;
-                envelope.style.pointerEvents = 'none';
-            }
-        });
-    }
-
     events.forEach(eventType => {
         envelope.addEventListener(eventType, function(e) {
             console.log(`🎯 Envelope ${eventType} detected!`);
@@ -393,6 +391,62 @@ function initializeEnvelope() {
                 setTimeout(() => toast.remove(), 2000);
                 return;
             }
+
+            // Show Password Modal
+            const modal = document.getElementById('passwordModal');
+            const input = document.getElementById('passwordInput');
+            const submitBtn = document.getElementById('submitBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
+            
+            modal.classList.add('show');
+            input.value = '';
+            input.focus();
+            
+            // Handle Submit
+            const checkPassword = () => {
+                if (input.value === "1025") {
+                    modal.classList.remove('show');
+                    if (!isOpened && !isAnimating) {
+                        console.log('💝 Opening envelope...');
+                        openEnvelope();
+                        isOpened = true;
+                        isAnimating = true;
+                        envelope.style.pointerEvents = 'none';
+                    }
+                } else {
+                    input.classList.add('shake');
+                    setTimeout(() => input.classList.remove('shake'), 400);
+                    input.value = '';
+                    input.placeholder = 'Try again...';
+                }
+            };
+            
+            // Event Listeners for Modal
+            submitBtn.onclick = checkPassword;
+            
+            cancelBtn.onclick = () => {
+                modal.classList.remove('show');
+            };
+            
+            input.onkeypress = (e) => {
+                if (e.key === 'Enter') checkPassword();
+            };
+            
+            // Close on outside click
+            modal.onclick = (e) => {
+                if (e.target === modal) modal.classList.remove('show');
+            };
+
+            return; // Stop here and wait for modal interaction
+
+            /* 
+            // Old prompt code removed
+            const password = prompt("Please enter the password to open the letter: 🔒");
+            if (password !== "1018") {
+                alert("Incorrect password! ❌\nHint: Our special date?");
+                return;
+            }
+            */
 
             if (!isOpened && !isAnimating) {
                 console.log('💝 Opening envelope...');
