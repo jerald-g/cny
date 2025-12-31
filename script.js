@@ -73,7 +73,8 @@ function showCelebration() {
     countdownSection.appendChild(celebrationContainer);
     
     // Trigger intense fireworks
-    fireworkChance = 0.4; // Increase frequency significantly
+    window.fireworkChance = 0.4; // Increase frequency significantly
+    console.log('🎆 Fireworks chance increased to 0.4');
     
     // Play fireworks sound
     // Using "Intense Fireworks Show" - heavy, rapid explosions
@@ -358,9 +359,19 @@ function initializeEnvelope() {
     // Use single click event for reliability
     envelope.addEventListener('click', function(e) {
         console.log('🎯 Envelope click detected!');
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Don't process if already opened
+        if (isOpened) {
+            console.log('Already opened, ignoring click');
+            return;
+        }
         
         // Check if it's New Year yet
         const now = new Date().getTime();
+        console.log('Current time:', now, 'Target:', newYear2026, 'Is past?', now >= newYear2026);
+        
         if (now < newYear2026) {
             // Shake animation
             envelope.style.animation = 'shake 0.5s ease-in-out';
@@ -395,21 +406,26 @@ function initializeEnvelope() {
         const submitBtn = document.getElementById('submitBtn');
         const cancelBtn = document.getElementById('cancelBtn');
         
+        // Don't show if already showing
+        if (modal.classList.contains('show')) {
+            console.log('Modal already showing');
+            return;
+        }
+        
+        console.log('📋 Showing password modal');
         modal.classList.add('show');
         input.value = '';
-        input.focus();
+        setTimeout(() => input.focus(), 100); // Delay focus for mobile
         
         // Handle Submit
         const checkPassword = () => {
             if (input.value === "1025") {
                 modal.classList.remove('show');
-                if (!isOpened && !isAnimating) {
-                    console.log('💝 Opening envelope...');
-                    openEnvelope();
-                    isOpened = true;
-                    isAnimating = true;
-                    envelope.style.pointerEvents = 'none';
-                }
+                console.log('💝 Opening envelope...');
+                openEnvelope();
+                isOpened = true;
+                isAnimating = true;
+                envelope.style.pointerEvents = 'none';
             } else {
                 input.classList.add('shake');
                 setTimeout(() => input.classList.remove('shake'), 400);
@@ -621,7 +637,7 @@ const ctx = canvas.getContext('2d');
 
 let fireworks = [];
 let particles = [];
-let fireworkChance = 0.05; // Base probability
+window.fireworkChance = 0.05; // Base probability (global)
 
 function resizeCanvas() {
     canvas.width = window.innerWidth;
@@ -698,7 +714,7 @@ class Particle {
 function animateFireworks() {
     ctx.fillStyle = 'rgba(15, 12, 41, 0.2)'; // Trail effect
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    if (Math.random() < fireworkChance) {
+    if (Math.random() < window.fireworkChance) {
         fireworks.push(new Firework());
     }
     fireworks = fireworks.filter(f => {
