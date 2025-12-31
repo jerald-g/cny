@@ -1,5 +1,5 @@
-// New Year 2026 countdown - Set to 1 minute from now for testing
-const newYear2026 = new Date().getTime() + 60000;
+// New Year 2026 countdown - January 1, 2026
+const newYear2026 = new Date('2026-01-01T00:00:00').getTime();
 
 function updateCountdown() {
     const now = new Date().getTime();
