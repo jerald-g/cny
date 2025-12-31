@@ -64,8 +64,9 @@ function showCelebration() {
     celebrationContainer.innerHTML = `
         <h1 class="celebration-title"><span class="emoji">🎉</span> Happy New Year 2026! <span class="emoji">🎊</span></h1>
         <div class="celebration-text">
-            <p>Welcome to 2026, my love! <span class="emoji">💕</span></p>
-            <p>May this new year bring us endless happiness together! <span class="emoji">🌟</span></p>
+            <p>Welcome to 2026 hehe <span class="emoji">💕</span></p>
+            <p>Happy New Year <33 <span class="emoji">🌟</span></p>
+            <p>Open the letter below  <span class="emoji">😉</span></p>
         </div>
     `;
     
