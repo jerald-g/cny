@@ -247,7 +247,6 @@ setInterval(() => {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 Page loaded, initializing...');
     initializeEnvelope();
-    addDebugControls(); // Add debug button for testing
     
     // Add backup click detection for the entire document
     document.addEventListener('click', function(e) {
@@ -737,16 +736,3 @@ function animateFireworks() {
     requestAnimationFrame(animateFireworks);
 }
 animateFireworks();
-
-
-// Debug controls for testing
-function addDebugControls() {
-    const btn = document.createElement('button');
-    btn.textContent = 'Test Celebration';
-    btn.style.cssText = 'position: fixed; bottom: 20px; right: 20px; z-index: 9999; padding: 10px 20px; background: #ff4081; color: white; border: none; border-radius: 5px; cursor: pointer; font-family: sans-serif;';
-    btn.onclick = () => {
-        showCelebration();
-        btn.style.display = 'none'; // Hide button after clicking
-    };
-    document.body.appendChild(btn);
-}
