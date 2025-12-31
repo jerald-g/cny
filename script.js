@@ -355,109 +355,85 @@ function initializeEnvelope() {
     envelope.style.border = '3px solid rgba(255, 105, 180, 0.5)';
     envelope.title = 'Click me to open the love letter! 💕';
     
-    // Add multiple event types for maximum compatibility
-    const events = ['click', 'touchstart', 'pointerdown'];
-    
-    events.forEach(eventType => {
-        envelope.addEventListener(eventType, function(e) {
-            console.log(`🎯 Envelope ${eventType} detected!`);
+    // Use single click event for reliability
+    envelope.addEventListener('click', function(e) {
+        console.log('🎯 Envelope click detected!');
+        
+        // Check if it's New Year yet
+        const now = new Date().getTime();
+        if (now < newYear2026) {
+            // Shake animation
+            envelope.style.animation = 'shake 0.5s ease-in-out';
+            setTimeout(() => envelope.style.animation = '', 500);
             
-            // Check if it's New Year yet
-            const now = new Date().getTime();
-            if (now < newYear2026) {
-                // Shake animation
-                envelope.style.animation = 'shake 0.5s ease-in-out';
-                setTimeout(() => envelope.style.animation = '', 500);
-                
-                // Show a toast message
-                const toast = document.createElement('div');
-                toast.textContent = "Wait for the countdown! 🕰️";
-                toast.style.position = 'fixed';
-                toast.style.top = '50%';
-                toast.style.left = '50%';
-                toast.style.transform = 'translate(-50%, -50%)';
-                toast.style.background = 'rgba(139, 0, 0, 0.9)';
-                toast.style.color = '#ffd700';
-                toast.style.padding = '15px 30px';
-                toast.style.borderRadius = '25px';
-                toast.style.zIndex = '2000';
-                toast.style.fontFamily = "'Playfair Display', serif";
-                toast.style.fontSize = '1.5rem';
-                toast.style.border = '2px solid #ffd700';
-                toast.style.animation = 'fade-out 2s forwards';
-                toast.style.pointerEvents = 'none';
-                document.body.appendChild(toast);
-                
-                setTimeout(() => toast.remove(), 2000);
-                return;
-            }
+            // Show a toast message
+            const toast = document.createElement('div');
+            toast.textContent = "Wait for the countdown! 🕰️";
+            toast.style.position = 'fixed';
+            toast.style.top = '50%';
+            toast.style.left = '50%';
+            toast.style.transform = 'translate(-50%, -50%)';
+            toast.style.background = 'rgba(139, 0, 0, 0.9)';
+            toast.style.color = '#ffd700';
+            toast.style.padding = '15px 30px';
+            toast.style.borderRadius = '25px';
+            toast.style.zIndex = '2000';
+            toast.style.fontFamily = "'Playfair Display', serif";
+            toast.style.fontSize = '1.5rem';
+            toast.style.border = '2px solid #ffd700';
+            toast.style.animation = 'fade-out 2s forwards';
+            toast.style.pointerEvents = 'none';
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.remove(), 2000);
+            return;
+        }
 
-            // Show Password Modal
-            const modal = document.getElementById('passwordModal');
-            const input = document.getElementById('passwordInput');
-            const submitBtn = document.getElementById('submitBtn');
-            const cancelBtn = document.getElementById('cancelBtn');
-            
-            modal.classList.add('show');
-            input.value = '';
-            input.focus();
-            
-            // Handle Submit
-            const checkPassword = () => {
-                if (input.value === "1025") {
-                    modal.classList.remove('show');
-                    if (!isOpened && !isAnimating) {
-                        console.log('💝 Opening envelope...');
-                        openEnvelope();
-                        isOpened = true;
-                        isAnimating = true;
-                        envelope.style.pointerEvents = 'none';
-                    }
-                } else {
-                    input.classList.add('shake');
-                    setTimeout(() => input.classList.remove('shake'), 400);
-                    input.value = '';
-                    input.placeholder = 'Try again...';
-                }
-            };
-            
-            // Event Listeners for Modal
-            submitBtn.onclick = checkPassword;
-            
-            cancelBtn.onclick = () => {
+        // Show Password Modal
+        const modal = document.getElementById('passwordModal');
+        const input = document.getElementById('passwordInput');
+        const submitBtn = document.getElementById('submitBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        
+        modal.classList.add('show');
+        input.value = '';
+        input.focus();
+        
+        // Handle Submit
+        const checkPassword = () => {
+            if (input.value === "1025") {
                 modal.classList.remove('show');
-            };
-            
-            input.onkeypress = (e) => {
-                if (e.key === 'Enter') checkPassword();
-            };
-            
-            // Close on outside click
-            modal.onclick = (e) => {
-                if (e.target === modal) modal.classList.remove('show');
-            };
-
-            return; // Stop here and wait for modal interaction
-
-            /* 
-            // Old prompt code removed
-            const password = prompt("Please enter the password to open the letter: 🔒");
-            if (password !== "1018") {
-                alert("Incorrect password! ❌\nHint: Our special date?");
-                return;
+                if (!isOpened && !isAnimating) {
+                    console.log('💝 Opening envelope...');
+                    openEnvelope();
+                    isOpened = true;
+                    isAnimating = true;
+                    envelope.style.pointerEvents = 'none';
+                }
+            } else {
+                input.classList.add('shake');
+                setTimeout(() => input.classList.remove('shake'), 400);
+                input.value = '';
+                input.placeholder = 'Try again...';
             }
-            */
+        };
+        
+        // Event Listeners for Modal
+        submitBtn.onclick = checkPassword;
+        
+        cancelBtn.onclick = () => {
+            modal.classList.remove('show');
+        };
+        
+        input.onkeypress = (e) => {
+            if (e.key === 'Enter') checkPassword();
+        };
+        
+        // Close on outside click
+        modal.onclick = (e) => {
+            if (e.target === modal) modal.classList.remove('show');
+        };
 
-            if (!isOpened && !isAnimating) {
-                console.log('💝 Opening envelope...');
-                openEnvelope();
-                isOpened = true;
-                isAnimating = true;
-                
-                // Prevent multiple triggers
-                envelope.style.pointerEvents = 'none';
-            }
-        }, { passive: false });
     });
     
     // Visual feedback on hover
